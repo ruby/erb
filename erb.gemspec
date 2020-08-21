@@ -1,8 +1,6 @@
-require_relative "lib/erb/version"
-
 Gem::Specification.new do |spec|
   spec.name          = "erb"
-  spec.version       = Erb::VERSION
+  spec.version       = "2.2.0"
   spec.authors       = ["Masatoshi SEKI"]
   spec.email         = ["seki@ruby-lang.org"]
 
