@@ -667,7 +667,7 @@ class ERB
       when 0, nil
         return [false, nil]
       when String
-        unless mode.match?(/\A(%|-|>|<>){1,2}\z/)
+        unless mode.match(/\A(%|-|>|<>){1,2}\z/)
           warn_invalid_trim_mode(mode, uplevel: 5)
         end
 
@@ -1020,7 +1020,7 @@ class ERB
     #
     def url_encode(s)
       s.to_s.b.gsub(/[^a-zA-Z0-9_\-.~]/n) { |m|
-        sprintf("%%%02X", m.unpack1("C"))
+        sprintf("%%%02X", m.unpack("C").first)
       }
     end
     alias u url_encode
