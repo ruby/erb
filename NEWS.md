@@ -1,5 +1,9 @@
 # Change Log
 
+## 2.2.3
+
+- Bump `required_ruby_version` from 2.3 to 2.5 as it has never been supported
+
 ## 2.2.2
 
 - `ERB.version` returns just a version number
