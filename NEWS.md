@@ -1,8 +1,7 @@
 # Change Log
 
-## Unreleased (to be 3.0.0)
+## Unreleased
 
-- Remove `safe_level` and further positional arguments from `ERB.new`
 - Fix a bug that a magic comment with a wrong format could be detected
 
 ## 2.2.3
