@@ -1,0 +1,5 @@
+reviewers:
+  defaults:
+    - hsbt
+options:
+  ignore_draft: true
