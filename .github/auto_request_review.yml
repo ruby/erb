@@ -1,4 +1,5 @@
 reviewers:
-  defaults: [team:yjit]
+  defaults:
+    - hsbt
 options:
   ignore_draft: true
