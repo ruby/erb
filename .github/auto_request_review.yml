@@ -1,5 +1,5 @@
 reviewers:
   defaults:
-    - hsbt
+    - team:release-team
 options:
   ignore_draft: true
