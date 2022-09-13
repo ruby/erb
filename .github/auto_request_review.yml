@@ -1,4 +1,5 @@
 files:
   '.github/*': [hsbt]
+
 options:
   ignore_draft: true
