@@ -1,5 +1,4 @@
 files:
   '.github/*': [team:yjit]
-
 options:
   ignore_draft: true
