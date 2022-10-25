@@ -1,12 +1,14 @@
 # Change Log
 
-## Unreleased
+## 3.0.0
 
-- Fix a bug that a magic comment with a wrong format could be detected
+- Bump `required_ruby_version` to Ruby 2.7+ [#23](https://github.com/ruby/erb/pull/23)
+- `ERB::Util.url_encode` uses a native implementation [#23](https://github.com/ruby/erb/pull/23)
+- Fix a bug that a magic comment with a wrong format could be detected [#6](https://github.com/ruby/erb/pull/6)
 
 ## 2.2.3
 
-- Bump `required_ruby_version` from 2.3 to 2.5 as it has never been supported
+- Bump `required_ruby_version` from 2.3 to 2.5 as it has never been supported [#3](https://github.com/ruby/erb/pull/3)
 
 ## 2.2.2
 
