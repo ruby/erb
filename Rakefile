@@ -7,6 +7,12 @@ Rake::TestTask.new(:test) do |t|
   t.test_files = FileList['test/**/test_*.rb']
 end
 
+if RUBY_ENGINE != 'jruby'
+  require 'rake/extensiontask'
+  Rake::ExtensionTask.new('erb')
+  task test: :compile
+end
+
 task :sync_tool do
   require 'fileutils'
   FileUtils.cp '../ruby/tool/lib/core_assertions.rb', './test/lib'
