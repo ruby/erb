@@ -10,7 +10,7 @@ jobs:
     steps:
       - id: versions
         run: |
-          versions=$(curl -s 'https://cache.ruby-lang.org/pub/misc/ci_versions/cruby.json')
+          versions=$(curl -s 'https://cache.ruby-lang.org/pub/misc/ci_versions/cruby.json' | jq -c '. + ["jruby", "truffleruby-head"]')
           echo "::set-output name=value::${versions}"
   test:
     needs: ruby-versions
@@ -26,9 +26,6 @@ jobs:
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{ matrix.ruby }}
-    - name: Install dependencies
-      run: |
-        gem install bundler --no-document
-        bundle install
+        bundler-cache: true
     - name: Run test
-      run: rake test
+      run: bundle exec rake test
