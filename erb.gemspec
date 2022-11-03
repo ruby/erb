@@ -27,7 +27,12 @@ Gem::Specification.new do |spec|
   spec.executables   = ['erb']
   spec.require_paths = ['lib']
 
-  spec.required_ruby_version = ">= 2.7.0"
+  if Gem::Platform === spec.platform and spec.platform =~ 'java' or RUBY_ENGINE == 'jruby'
+    spec.platform = 'java'
+  else
+    spec.required_ruby_version = ">= 2.7.0"
+    spec.extensions = ['ext/erb/escape/extconf.rb']
+  end
 
   spec.add_dependency 'cgi', '>= 0.3.3'
 end

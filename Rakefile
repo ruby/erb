@@ -1,8 +1,18 @@
 require 'bundler/gem_tasks'
 require 'rake/testtask'
 
+if RUBY_ENGINE != 'jruby'
+  require 'rake/extensiontask'
+  extask = Rake::ExtensionTask.new('erb/escape') do |ext|
+    ext.lib_dir.sub!(%r[(?=/|\z)], "/#{RUBY_VERSION}/#{ext.platform}")
+  end
+end
+
 Rake::TestTask.new(:test) do |t|
   t.libs << 'test/lib'
+  if extask
+    t.libs << "lib/#{RUBY_VERSION}/#{extask.platform}"
+  end
   t.ruby_opts << '-rhelper'
   t.test_files = FileList['test/**/test_*.rb']
 end

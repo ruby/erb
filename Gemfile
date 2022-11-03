@@ -2,5 +2,8 @@ source 'https://rubygems.org'
 
 gemspec
 
-gem 'rake'
-gem 'test-unit'
+group :development do
+  gem 'rake'
+  gem 'rake-compiler'
+  gem 'test-unit'
+end
