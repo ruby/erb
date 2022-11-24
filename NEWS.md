@@ -1,5 +1,9 @@
 # Change Log
 
+## Unreleased
+
+- Drop deprecated `-S` option from `erb` command
+
 ## 3.0.0
 
 - Bump `required_ruby_version` to Ruby 2.7+ [#23](https://github.com/ruby/erb/pull/23)
