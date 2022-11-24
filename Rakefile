@@ -9,7 +9,7 @@ end
 
 if RUBY_ENGINE != 'jruby'
   require 'rake/extensiontask'
-  Rake::ExtensionTask.new('erb')
+  Rake::ExtensionTask.new('erb2')
   task test: :compile
 end
 
