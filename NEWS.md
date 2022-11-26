@@ -1,7 +1,14 @@
 # Change Log
 
-## Unreleased
+## 4.0.0
 
+* Optimize `ERB::Util.html_escape`
+  * No longer duplicate an argument string when nothing is escaped.
+     * This makes `ERB::Util.html_escape` faster than `CGI.escapeHTML` in no-escape cases.
+  * It skips calling `#to_s` when an argument is already a String.
+* Define `ERB::Escape.html_escape` as an alias to `ERB::Util.html_escape`
+  * `ERB::Util.html_escape` is known to be monkey-patched by Rails.
+    `ERB::Escape.html_escape` is useful when you want a non-monkey-patched version.
 * Drop deprecated `-S` option from `erb` command
 
 ## 3.0.0
