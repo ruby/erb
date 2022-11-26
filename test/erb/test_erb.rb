@@ -251,6 +251,17 @@ EOS
     assert_equal("line\r\n" * 3, erb.result)
   end
 
+  def test_explicit_trim_line_with_expression
+    erb = @erb.new("line\r\n    <%-= 'value' %>\nline", trim_mode: '-')
+    assert_equal("line\r\n    value\nline", erb.result)
+
+    erb = @erb.new("line\r\n    <%-= 'value' if false %>\nline", trim_mode: '-')
+    assert_equal("line\r\n\nline", erb.result)
+
+    erb = @erb.new("line\r\n    <%-= 'value' if false -%>\nline", trim_mode: '-')
+    assert_equal("line\r\nline", erb.result)
+  end
+
   def test_invalid_trim_mode
     pend if RUBY_ENGINE == 'truffleruby'
 

@@ -246,7 +246,7 @@ class ERB::Compiler # :nodoc:
 
     class ExplicitScanner < Scanner # :nodoc:
       def scan
-        stag_reg = /(.*?)(^[ \t]*<%-|<%-|#{stags.join('|')}|\z)/m
+        stag_reg = /(.*?)(^[ \t]*<%-=?|<%-=?|#{stags.join('|')}|\z)/m
         etag_reg = /(.*?)(-%>|#{etags.join('|')}|\z)/m
         scanner = StringScanner.new(@src)
         while ! scanner.eos?
@@ -254,7 +254,7 @@ class ERB::Compiler # :nodoc:
           yield(scanner[1])
 
           elem = scanner[2]
-          if /[ \t]*<%-/ =~ elem
+          if /[ \t]*<%-$/ =~ elem
             yield('<%')
           elsif elem == '-%>'
             yield('%>')
@@ -343,7 +343,7 @@ class ERB::Compiler # :nodoc:
       out.cr
     when :cr
       out.cr
-    when '<%', '<%=', '<%#'
+    when '<%', '<%=', /[ \t]*<%-=/, '<%#'
       scanner.stag = stag
       add_put_cmd(out, content) if content.size > 0
       self.content = +''
@@ -381,6 +381,8 @@ class ERB::Compiler # :nodoc:
       else
         out.push(content)
       end
+    when /([ \t]*)<%-=/
+      add_insert_cmd(out, "-> (c) { c.to_s.empty? ? '' : '#{$1}' + c }.((#{content}))")
     when '<%='
       add_insert_cmd(out, content)
     when '<%#'
