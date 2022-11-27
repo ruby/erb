@@ -3,16 +3,17 @@
 #
 # A subset of ERB::Util. Unlike ERB::Util#html_escape, we expect/hope
 # Rails will not monkey-patch ERB::Escape#html_escape.
-case RUBY_ENGINE
-when 'jruby', 'truffleruby'
+begin
+  require 'erb/escape'
+rescue LoadError # for JRuby, TruffleRuby
+end
+unless defined?(ERB::Escape)
   module ERB::Escape
     def html_escape(s)
       CGI.escapeHTML(s.to_s)
     end
     module_function :html_escape
   end
-else
-  require 'erb/escape'
 end
 
 #--
