@@ -1,5 +1,9 @@
 # Change Log
 
+## 4.0.1
+
+* Stop building the C extension for TruffleRuby [#39](https://github.com/ruby/erb/pull/39)
+
 ## 4.0.0
 
 * Optimize `ERB::Util.html_escape` [#27](https://github.com/ruby/erb/pull/27)
