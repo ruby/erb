@@ -7,7 +7,10 @@ Rake::TestTask.new(:test) do |t|
   t.test_files = FileList['test/**/test_*.rb']
 end
 
-if RUBY_ENGINE != 'jruby'
+case RUBY_ENGINE
+when 'jruby', 'truffleruby'
+  # not using C extension
+else
   require 'rake/extensiontask'
   Rake::ExtensionTask.new('erb/escape')
   task test: :compile
