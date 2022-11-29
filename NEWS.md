@@ -1,5 +1,9 @@
 # Change Log
 
+## 4.0.2
+
+* Fix line numbers after multi-line `<%#` [#42](https://github.com/ruby/erb/pull/42)
+
 ## 4.0.1
 
 * Stop building the C extension for TruffleRuby [#39](https://github.com/ruby/erb/pull/39)
