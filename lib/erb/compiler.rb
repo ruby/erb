@@ -282,7 +282,7 @@ class ERB::Compiler # :nodoc:
 
       # Add the script options on a single line:
       if script_options.any?
-        @script << "# #{script_options.join(' ')}\n"
+        @script << "\##{script_options.join(' ')}\n"
         @line_offset += 1
       end
 
@@ -325,8 +325,8 @@ class ERB::Compiler # :nodoc:
   end
 
   def add_put_cmd(out, content, offset = 0)
-    line_count = content.count("\n")
-    out.push("#{@put_cmd} #{content.dump}.freeze#{"\n" * line_count}")
+    content = content.gsub("'", "\\\\'")
+    out.push("#{@put_cmd} '#{content}'")
   end
 
   def add_insert_cmd(out, content)

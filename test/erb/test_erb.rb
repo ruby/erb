@@ -54,7 +54,7 @@ class TestERB < Test::Unit::TestCase
     e = assert_raise(MyError) {
       erb.result
     }
-    assert_match(/\Atest filename:101\b/, e.backtrace[0])
+    assert_match(/\Atest filename:100\b/, e.backtrace[0])
   end
 
   def test_with_location
@@ -63,7 +63,7 @@ class TestERB < Test::Unit::TestCase
     e = assert_raise(MyError) {
       erb.result
     }
-    assert_match(/\Atest filename:201\b/, e.backtrace[0])
+    assert_match(/\Atest filename:200\b/, e.backtrace[0])
   end
 
   def test_html_escape
@@ -627,7 +627,7 @@ EOS
   def test_frozen_string_literal
     bug12031 = '[ruby-core:73561] [Bug #12031]'
     e = @erb.new("<%#encoding: us-ascii%>a")
-    e.src.sub!(/\A#(?:-\*-)?(.*)(?:-\*-)?/) {
+    e.src.script.sub!(/\A#(?:-\*-)?(.*)(?:-\*-)?/) {
       '# -*- \1; frozen-string-literal: true -*-'
     }
     assert_equal("a", e.result, bug12031)

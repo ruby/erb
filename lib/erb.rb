@@ -350,7 +350,7 @@ class ERB
     set_eoutvar(compiler, eoutvar)
     @src, @encoding, @frozen_string = *compiler.compile(str)
     @filename = nil
-    @lineno = 0
+    @lineno = 1
     @_init = self.class.singleton_class
   end
   NOT_GIVEN = Object.new
@@ -463,7 +463,7 @@ class ERB
   #   erb.def_method(MyClass, 'render(arg1, arg2)', filename)
   #   print MyClass.new.render('foo', 123)
   def def_method(mod, methodname, fname='(ERB)')
-    src = self.src.sub(/^(?!#|$)/) {"def #{methodname}\n"} << "\nend\n"
+    src = self.src.script.sub(/^(?!#|$)/) {"def #{methodname}\n"} << "\nend\n"
     mod.module_eval do
       eval(src, binding, fname, -1)
     end
