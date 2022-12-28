@@ -426,7 +426,7 @@ class ERB
     unless @_init.equal?(self.class.singleton_class)
       raise ArgumentError, "not initialized"
     end
-    eval(@src, b, (@filename || '(erb)'), @lineno)
+    eval(@src.script, b, (@filename || '(erb)'), @lineno - @src.line_offset)
   end
 
   # Render a template on a new toplevel binding with local variables specified

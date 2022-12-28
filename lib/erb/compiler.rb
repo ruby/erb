@@ -272,37 +272,61 @@ class ERB::Compiler # :nodoc:
     def initialize(compiler, enc=nil, frozen=nil)
       @compiler = compiler
       @line = []
+      @line_offset = 0
+
+      script_options = []
+      script_options << "coding:#{enc}" if enc
+      script_options << "frozen_string_literal:#{frozen}" unless frozen.nil?
+
       @script = +''
-      @script << "#coding:#{enc}\n" if enc
-      @script << "#frozen-string-literal:#{frozen}\n" unless frozen.nil?
+
+      # Add the script options on a single line:
+      if script_options.any?
+        @script << "# #{script_options.join(' ')}\n"
+        @line_offset += 1
+      end
+
       @compiler.pre_cmd.each do |x|
         push(x)
       end
     end
+
+    # The number of prefix lines which are unrelated to script lines.
+    attr :line_offset
+
     attr_reader :script
 
+    alias to_str script
+
+    # Add an expression to the current line:
     def push(cmd)
       @line << cmd
     end
 
     def cr
-      @script << (@line.join('; '))
+      # Append the current line to the script buffer and reset the line buffer:
+      @script << @line.join('; ') << "\n"
       @line = []
-      @script << "\n"
     end
 
     def close
+      # Don't allow close to be called multiple times:
       return unless @line
+
+      # Append all post commands to a single line:
       @compiler.post_cmd.each do |x|
         push(x)
       end
-      @script << (@line.join('; '))
+
+      # Append the post commands ot the script buffer and nullify the line buffer:
+      @script << @line.join('; ')
       @line = nil
     end
   end
 
-  def add_put_cmd(out, content)
-    out.push("#{@put_cmd} #{content.dump}.freeze#{"\n" * content.count("\n")}")
+  def add_put_cmd(out, content, offset = 0)
+    line_count = content.count("\n")
+    out.push("#{@put_cmd} #{content.dump}.freeze#{"\n" * line_count}")
   end
 
   def add_insert_cmd(out, content)
@@ -331,7 +355,7 @@ class ERB::Compiler # :nodoc:
     end
     add_put_cmd(out, content) if content.size > 0
     out.close
-    return out.script, *magic_comment
+    return out, *magic_comment
   end
 
   def compile_stag(stag, out, scanner)
