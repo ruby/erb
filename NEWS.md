@@ -1,5 +1,9 @@
 # Change Log
 
+## 4.0.3
+
+* Enable `frozen_string_literal` in all files [#49](https://github.com/ruby/erb/pull/49)
+
 ## 4.0.2
 
 * Fix line numbers after multi-line `<%#` [#42](https://github.com/ruby/erb/pull/42)
