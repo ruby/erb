@@ -268,6 +268,21 @@ class ERB
     VERSION
   end
 
+  module Unmarshalable # :nodoc:
+    def initialize_for_marshal
+      @_init = self.class.singleton_class
+    end
+    private :initialize_for_marshal
+
+    def pre_eval_check
+      unless @_init.equal?(self.class.singleton_class)
+        raise ArgumentError, "not initialized"
+      end
+    end
+    private :pre_eval_check
+  end
+  include Unmarshalable
+
   #
   # Constructs a new ERB object with the template specified in _str_.
   #
@@ -351,7 +366,7 @@ class ERB
     @src, @encoding, @frozen_string = *compiler.compile(str)
     @filename = nil
     @lineno = 0
-    @_init = self.class.singleton_class
+    initialize_for_marshal
   end
   NOT_GIVEN = Object.new
   private_constant :NOT_GIVEN
@@ -423,9 +438,7 @@ class ERB
   # code evaluation.
   #
   def result(b=new_toplevel)
-    unless @_init.equal?(self.class.singleton_class)
-      raise ArgumentError, "not initialized"
-    end
+    pre_eval_check
     eval(@src, b, (@filename || '(erb)'), @lineno)
   end
 
