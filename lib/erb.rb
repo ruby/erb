@@ -283,6 +283,13 @@ class ERB
   end
   include Unmarshalable
 
+  # Module to make ERB marshalable.
+  module Marshalable # :nodoc:
+    Unmarshalable.private_instance_methods.each do |m|
+      define_method(m) {}
+    end
+  end
+
   #
   # Constructs a new ERB object with the template specified in _str_.
   #

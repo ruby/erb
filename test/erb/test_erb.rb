@@ -715,9 +715,7 @@ EOS
   end
 
   class MarshalableERB < ERB
-    Unmarshalable.private_instance_methods.each do |m|
-      define_method(m) {}
-    end
+    include Marshalable
   end
 
   def test_marshalable_subclass_marshal
