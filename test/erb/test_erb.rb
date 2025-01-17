@@ -714,6 +714,19 @@ EOS
     assert_raise(ArgumentError) {erb.result}
   end
 
+  class MarshalableERB < ERB
+    include Marshalable
+  end
+
+  def test_marshalable_subclass_marshal
+    erb = MarshalableERB.new("<%=x%>")
+    dump = assert_nothing_raised(TypeError) {Marshal.dump(erb)}
+    loaded = Marshal.load(dump)
+    bind = binding
+    bind.local_variable_set(:x, 42)
+    assert_equal("42", loaded.result(bind))
+  end
+
   def test_multi_line_comment_lineno
     erb = ERB.new(<<~EOS)
       <%= __LINE__ %>
