@@ -34,5 +34,7 @@ Gem::Specification.new do |spec|
     spec.extensions = ['ext/erb/escape/extconf.rb']
   end
 
-  spec.add_dependency 'cgi', '>= 0.3.3'
+  if RUBY_VERSION < '3.5'
+    spec.add_dependency 'cgi', '>= 0.3.3'
+  end
 end
