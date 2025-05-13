@@ -1,5 +1,11 @@
 # Change Log
 
+## 5.0.0
+
+* Bump `required_ruby_version` to Ruby 3.2+ [#60](https://github.com/ruby/erb/pull/60)
+* Drop `cgi` from runtime dependencies [#59](https://github.com/ruby/erb/pull/59)
+* Make `ERB::VERSION` public
+
 ## 4.0.4
 
 * Skip building the C extension for JRuby [#52](https://github.com/ruby/erb/pull/52)
