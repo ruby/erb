@@ -1,5 +1,9 @@
 # Change Log
 
+## 5.0.1
+
+* Rescue `LoadError` when failing to load `erb/escape`
+
 ## 5.0.0
 
 * Bump `required_ruby_version` to Ruby 3.2+ [#60](https://github.com/ruby/erb/pull/60)
