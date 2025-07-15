@@ -1,5 +1,9 @@
 # Change Log
 
+## 5.0.2
+
+* Declare escape functions as Ractor-safe [#63](https://github.com/ruby/erb/pull/63)
+
 ## 5.0.1
 
 * Rescue `LoadError` when failing to load `erb/escape`
