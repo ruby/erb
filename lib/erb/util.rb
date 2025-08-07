@@ -47,6 +47,10 @@ module ERB::Util
   alias h html_escape
   module_function :h
 
+  module_function :html_escape!
+  alias h! html_escape!
+  module_function :h!
+
   #
   # A utility method for encoding the String _s_ as a URL.
   #
