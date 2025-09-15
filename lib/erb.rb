@@ -271,7 +271,7 @@ require 'erb/util'
 #
 # #### Shorthand Format for Execution Tags
 #
-# You can give `trim_mode: '%'` to enable a shorthand format for execution tags;
+# You can use keyword argument `trim_mode: '%'` to enable a shorthand format for execution tags;
 # this example uses the shorthand format `% _code_` instead of `<% _code_ %>`:
 #
 # ```
@@ -311,7 +311,8 @@ require 'erb/util'
 # ```
 #
 # Using keyword argument `trim_mode: '-'`, you can suppress each blank line
-# whose source line ends with `-%>` (instead of `%>`):
+# whose source line ends with `-%>` (instead of `%>`);
+# in this example, line numbers are added for clarity:
 #
 # ```
 # s = <<EOT
@@ -325,16 +326,93 @@ require 'erb/util'
 #
 # #### Suppressing Unwanted Newlines
 #
-# ##### `trim_mode: '<>'`
 #
-# - '<>': Omit newline for each line starting with '<%' and ending with '%>':
+# You can use two other values for keyword argument `trim_mode`,
+# `'>'` and `'<>'`, to suppress unwanted newlines.
 #
-# ##### `trim_mode: '>'`
+# Consider this string, in file `t.txt`:
 #
+# ```
+# $ cat -n t.txt
+#      1  <%
+#      2  if true
+#      3  %>
+#      4  <%= RUBY_VERSION %>
+#      5  <%
+#      6  end
+#      7  %>
+# ```
 #
-# - `'>'`: Omit newline for each line ending with `'%>'`:
+# We can read it into a variable 's'`:
 #
+# ```
+# s = File.read('t.txt')
+# ```
 #
+# In this result, with no `trim_mode` given:
+#
+# - Result line 0: The entire execution tag (lines 1-3) is removed,
+#   leaving only the newline from the end of line 3.
+# - Result line 1: The entire 1-line expression tag (line 4) is replaced,
+#   leaving only the expression's value and a newline from the end of the line
+# - Result line 2: The entire second execution tag (lines 5-7) is removed,
+#   leaving only the newline from the end of line 7.
+#
+# ```
+# ERB.new(s).result.lines.each_with_index {|line, i| p [i, line] }
+# [0, "\n"]
+# [1, "3.4.5\n"]
+# [2, "\n"]
+# ```
+#
+# Trim-mode value `'>'` specifies that each line that ends with `'%>`
+# should have its trailing newline removed.
+#
+# In this result, with `trim_mode: '>'` given:
+#
+# ```
+# ERB.new(s, trim_mode: '>').result.lines.each_with_index {|line, i| p [i, line] }
+# [0, "3.4.5"]
+# ```
+#
+# - The entire first execution tag (lines 1-3) is removed.
+#   Because its last line ends with `%>', its newline is also removed,
+#   so that nothing goes into the result.
+# - Result line 0: The entire expression tag (line 4) is replaced,
+#   leaving only the expression's value and a newline.
+#   Because its last line ends with `'%>'', its newline is also removed,
+#   so that only the replacement text goes into the result.
+# - The entire second execution tag (lines 4-7) is removed.
+#   Because its last line ends with `%>', its newline is also removed,
+#   so that nothing goes into the result.
+#
+# Trim-mode value `'<>'` specifies that each line that begins with `'<%'` and ends with `'%>`
+# should have its trailing newline removed.
+#
+# In this result, with `trim_mode: '<>'` given:
+#
+# ```
+# ERB.new(s, trim_mode: '<>').result.lines.each_with_index {|line, i| p [i, line] }
+# [0, "\n"]
+# [1, "3.4.5\n"]
+# ```
+#
+# 1. Result line 0: The entire first execution tag (lines 1-3) is removed.
+#    Because its last line ends with `%>' but does not begin with `'<%'`, its newline is not removed,
+#    so that the newline goes into the result.
+# 2. Result line 1: The entire expression tag (line 4) is replaced,
+#    leaving only the expression's value and a newline.
+#    Because its last line ends with `%>' but does not begin with `'<%'`, its newline is not removed,
+#    so that nothing goes into the result.
+# 1. The entire second execution tag is removed.
+#    Because its last line ends with `%>', its newline is also remove,
+#    so that nothing goes into the result.
+#
+# ```
+# ERB.new(s, trim_mode: '<>').result.lines.each_with_index {|line, i| p [i, line] }
+# [0, "\n"]
+# [1, "3.4.5\n"]
+# ```
 #
 # ### Comment Tags
 #
