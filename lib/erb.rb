@@ -295,7 +295,8 @@ require 'erb/util'
 #
 # #### Suppressing Unwanted Blank Lines
 #
-# The result of this template contains blank lines, which may be unwanted:
+# With keyword argument `trim_mode` not given,
+# all blank lines go into the result:
 #
 # ```
 # s = <<EOT
@@ -303,16 +304,14 @@ require 'erb/util'
 # <%= RUBY_VERSION %>
 # <% end %>
 # EOT
-# ERB.new(s).result.lines.each_with_index {|line, i| p [i, line] }
-# [0, "\n"]
-# [1, "3.4.5\n"]
-# [2, "\n"]
-# # => ["\n", "3.4.5\n", "\n"]
+# ERB.new(s).result.lines.each {|line| puts line.inspect }
+# "\n"
+# "3.4.5\n"
+# "\n"
 # ```
 #
-# Using keyword argument `trim_mode: '-'`, you can suppress each blank line
-# whose source line ends with `-%>` (instead of `%>`);
-# in this example, line numbers are added for clarity:
+# You can give `trim_mode: '-'`, you can suppress each blank line
+# whose source line ends with `-%>` (instead of `%>`):
 #
 # ```
 # s = <<EOT
@@ -320,98 +319,48 @@ require 'erb/util'
 # <%= RUBY_VERSION %>
 # <% end -%>
 # EOT
-# ERB.new(s, trim_mode: '-').result.lines.each_with_index {|line, i| p [i, line] }
-# [0, "3.4.5\n"]
+# ERB.new(s, trim_mode: '-').result.lines.each {|line| puts line.inspect }
+# "3.4.5\n"
 # ```
 #
 # #### Suppressing Unwanted Newlines
 #
-#
-# You can use two other values for keyword argument `trim_mode`,
-# `'>'` and `'<>'`, to suppress unwanted newlines.
-#
-# Consider this string, in file `t.txt`:
+# Consider this input string:
 #
 # ```
-# $ cat -n t.txt
-#      1  <%
-#      2  if true
-#      3  %>
-#      4  <%= RUBY_VERSION %>
-#      5  <%
-#      6  end
-#      7  %>
+# s = <<EOT
+# <% RUBY_VERSION %>
+# <%= RUBY_VERSION %>
+# foo <% RUBY_VERSION %>
+# foo <%= RUBY_VERSION %>
+# EOT
 # ```
 #
-# We can read it into a variable 's'`:
+# With keyword argument `trim_mode` not given, all newlines go into the result:
 #
 # ```
-# s = File.read('t.txt')
+# ERB.new(s).result.lines.each {|line| puts line.inspect }
+# "\n"
+# "3.4.5\n"
+# "foo \n"
+# "foo 3.4.5\n"
 # ```
 #
-# In this result, with no `trim_mode` given:
-#
-# - Result line 0: The entire execution tag (lines 1-3) is removed,
-#   leaving only the newline from the end of line 3.
-# - Result line 1: The entire 1-line expression tag (line 4) is replaced,
-#   leaving only the expression's value and a newline from the end of the line
-# - Result line 2: The entire second execution tag (lines 5-7) is removed,
-#   leaving only the newline from the end of line 7.
+# You can give `trim_mode: '>'` to suppress the trailing newline
+# for each line that ends with `'%<'` (regardless of its beginning):
 #
 # ```
-# ERB.new(s).result.lines.each_with_index {|line, i| p [i, line] }
-# [0, "\n"]
-# [1, "3.4.5\n"]
-# [2, "\n"]
+# ERB.new(s, trim_mode: '>').result.lines.each {|line| puts line.inspect }
+# "3.4.5foo foo 3.4.5"
 # ```
 #
-# Trim-mode value `'>'` specifies that each line that ends with `'%>`
-# should have its trailing newline removed.
-#
-# In this result, with `trim_mode: '>'` given:
+# You can give `trim_mode: '<>'` to suppress the trailing newline
+# for each line that both begins with `'<%'` and ends with `'%<'`:
 #
 # ```
-# ERB.new(s, trim_mode: '>').result.lines.each_with_index {|line, i| p [i, line] }
-# [0, "3.4.5"]
-# ```
-#
-# - The entire first execution tag (lines 1-3) is removed.
-#   Because its last line ends with `%>', its newline is also removed,
-#   so that nothing goes into the result.
-# - Result line 0: The entire expression tag (line 4) is replaced,
-#   leaving only the expression's value and a newline.
-#   Because its last line ends with `'%>'', its newline is also removed,
-#   so that only the replacement text goes into the result.
-# - The entire second execution tag (lines 4-7) is removed.
-#   Because its last line ends with `%>', its newline is also removed,
-#   so that nothing goes into the result.
-#
-# Trim-mode value `'<>'` specifies that each line that begins with `'<%'` and ends with `'%>`
-# should have its trailing newline removed.
-#
-# In this result, with `trim_mode: '<>'` given:
-#
-# ```
-# ERB.new(s, trim_mode: '<>').result.lines.each_with_index {|line, i| p [i, line] }
-# [0, "\n"]
-# [1, "3.4.5\n"]
-# ```
-#
-# 1. Result line 0: The entire first execution tag (lines 1-3) is removed.
-#    Because its last line ends with `%>' but does not begin with `'<%'`, its newline is not removed,
-#    so that the newline goes into the result.
-# 2. Result line 1: The entire expression tag (line 4) is replaced,
-#    leaving only the expression's value and a newline.
-#    Because its last line ends with `%>' but does not begin with `'<%'`, its newline is not removed,
-#    so that nothing goes into the result.
-# 1. The entire second execution tag is removed.
-#    Because its last line ends with `%>', its newline is also remove,
-#    so that nothing goes into the result.
-#
-# ```
-# ERB.new(s, trim_mode: '<>').result.lines.each_with_index {|line, i| p [i, line] }
-# [0, "\n"]
-# [1, "3.4.5\n"]
+# ERB.new(s, trim_mode: '<>').result.lines.each {|line| puts line.inspect }
+# "3.4.5foo \n"
+# "foo 3.4.5\n"
 # ```
 #
 # ### Comment Tags
