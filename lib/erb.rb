@@ -189,7 +189,17 @@ require 'erb/util'
 #
 # When you call method #result,
 # the method executes the code and removes the entire execution tag
-# (generating no text in the result).
+# (generating no text in the result):
+#
+# ```
+# ERB.new('foo <% Dir.chdir("C:/") %> bar').result # => "foo  bar"
+# ```
+#
+# Whitespace before and after the embedded code is optional:
+#
+# ```
+# ERB.new('foo <%Dir.chdir("C:/")%> bar').result   # => "foo  bar"
+# ```
 #
 # You can interleave text with execution tags to form a control structure
 # such as a conditional, a loop, or a `case` statements.
@@ -282,6 +292,49 @@ require 'erb/util'
 #
 # Note that in the shorthand format, the character `'%'` must be the first character in the code line
 # (no leading whitespace).
+#
+# #### Suppressing Unwanted Blank Lines
+#
+# The result of this template contains blank lines, which may be unwanted:
+#
+# ```
+# s = <<EOT
+# <% if true %>
+# <%= RUBY_VERSION %>
+# <% end %>
+# EOT
+# ERB.new(s).result.lines.each_with_index {|line, i| p [i, line] }
+# [0, "\n"]
+# [1, "3.4.5\n"]
+# [2, "\n"]
+# # => ["\n", "3.4.5\n", "\n"]
+# ```
+#
+# Using keyword argument `trim_mode: '-'`, you can suppress each blank line
+# whose source line ends with `-%>` (instead of `%>`):
+#
+# ```
+# s = <<EOT
+# <% if true -%>
+# <%= RUBY_VERSION %>
+# <% end -%>
+# EOT
+# ERB.new(s, trim_mode: '-').result.lines.each_with_index {|line, i| p [i, line] }
+# [0, "3.4.5\n"]
+# ```
+#
+# #### Suppressing Unwanted Newlines
+#
+# ##### `trim_mode: '<>'`
+#
+# - '<>': Omit newline for each line starting with '<%' and ending with '%>':
+#
+# ##### `trim_mode: '>'`
+#
+#
+# - `'>'`: Omit newline for each line ending with `'%>'`:
+#
+#
 #
 # ### Comment Tags
 #
