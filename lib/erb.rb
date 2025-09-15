@@ -590,10 +590,11 @@ class ERB
   #
   # **Keyword Argument `trim_mode`**
   #
-  # When keyword argument `trim_mode` has a string value,
-  # that value may be one of:
+  # You can use keyword argument `trim_mode: '%'`
+  # to enable the [shorthand format][shorthand format] for execution tags.
   #
-  # - `'%'`: Enable [shorthand format][shorthand format] for execution tags.
+  # Other values allow [whitespace control][whitespace control]:
+  #
   # - `'-'`: Omit each blank line ending with `'%>'`.
   # - `'>'`: Omit newline for each line ending with `'%>'`.
   # - `'<>'`: Omit newline for each line starting with `'<%'` and ending with `'%>'`.
@@ -631,10 +632,11 @@ class ERB
   # However, their values, if given, are handled thus:
   #
   # - `safe_level`: ignored.
-  # - `legacy_trim_mode: overrides keyword argument `trim_mode`.
-  # - `legacy_eoutvar: overrides keyword argument `eoutvar`.
+  # - `legacy_trim_mode`: overrides keyword argument `trim_mode`.
+  # - `legacy_eoutvar`: overrides keyword argument `eoutvar`.
   #
   # [shorthand format]: rdoc-ref:ERB@Shorthand+Format+for+Execution+Tags
+  # [whitespace control]: rdoc-ref:ERB@Whitespace+Control
   #
   def initialize(str, safe_level=NOT_GIVEN, legacy_trim_mode=NOT_GIVEN, legacy_eoutvar=NOT_GIVEN, trim_mode: nil, eoutvar: '_erbout')
     # Complex initializer for $SAFE deprecation at [Feature #14256]. Use keyword arguments to pass trim_mode or eoutvar.
