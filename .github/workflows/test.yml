@@ -31,3 +31,6 @@ jobs:
         bundler-cache: true
     - name: Run test
       run: bundle exec rake test
+    - name: RDoc coverage
+      run: |
+        rdoc -C .
