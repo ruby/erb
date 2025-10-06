@@ -1,10 +1,10 @@
-name: Sync ruby/ruby
+name: Sync ruby
 on:
   push:
     branches: [master]
 jobs:
   sync:
-    name: Sync ruby/ruby
+    name: Sync ruby
     runs-on: ubuntu-latest
     if: ${{ github.repository == 'ruby/erb' }}
     steps:
