@@ -16,6 +16,8 @@ jobs:
         with:
           app-id: 2060836
           private-key: ${{ secrets.RUBY_SYNC_DEFAULT_GEMS_PRIVATE_KEY }}
+          owner: ruby
+          repositories: ruby
 
       - name: Sync to ruby/ruby
         uses: convictional/trigger-workflow-and-wait@v1.6.5
