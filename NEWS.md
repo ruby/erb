@@ -1,5 +1,9 @@
 # Change Log
 
+## 5.0.3
+
+* Update help of erb(1) [#85](https://github.com/ruby/erb/pull/85)
+
 ## 5.0.2
 
 * Declare escape functions as Ractor-safe [#63](https://github.com/ruby/erb/pull/63)
