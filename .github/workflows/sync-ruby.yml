@@ -6,7 +6,7 @@ jobs:
   sync:
     name: Sync ruby
     runs-on: ubuntu-latest
-    if: ${{ github.repository == 'ruby/erb' }}
+    if: ${{ github.repository_owner == 'ruby' }}
     steps:
       - uses: actions/checkout@v5
 
@@ -28,6 +28,6 @@ jobs:
           github_token: ${{ steps.app-token.outputs.token }}
           ref: master
           client_payload: |
-            {"gem":"erb","before":"${{ github.event.before }}","after":"${{ github.event.after }}"}
+            {"gem":"${{ github.event.repository.name }}","before":"${{ github.event.before }}","after":"${{ github.event.after }}"}
           propagate_failure: true
           wait_interval: 10
