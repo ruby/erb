@@ -1,21 +1,21 @@
-# \ERB (Embedded Ruby)
+# ERB (Embedded Ruby)
 
-\ERB is an easy-to-use, but also very powerful, [template processor][template processor].
+ERB is an easy-to-use, but also very powerful, [template processor][template processor].
 
-\ERB is commonly used to produce:
+ERB is commonly used to produce:
 
 - Customized or personalized email messages.
 - Customized or personalized web pages.
 - Software code (in code-generating applications).
 
-Like method [sprintf][sprintf], \ERB can format run-time data into a string.
-\ERB, however, is *much more powerful*
+Like method [sprintf][sprintf], ERB can format run-time data into a string.
+ERB, however, is *much more powerful*
 
-## How \ERB Works
+## How ERB Works
 
-Using \ERB, you can create a *template*: a plain-text string that has specially-formatted *tags*,
-then store it into an \ERB object;
-when \ERB produces _result_ string, it:
+Using ERB, you can create a *template*: a plain-text string that has specially-formatted *tags*,
+then store it into an ERB object;
+when ERB produces _result_ string, it:
 
 - Inserts run-time-evaluated expressions into the result.
 - Executes snippets of Ruby code.
@@ -35,7 +35,7 @@ There are three types of tags:
 | Execution tag  |     <tt>'<% _ruby_code_ %>'</tt>     |     Execute <tt>_ruby_code_</tt>.     |        None.         |                 
 | Comment tag    |   <tt>'<%# _comment_text_ %>'</tt>   |                 None.                 |        None.         |
 
-These examples use `erb`, the \ERB command-line interface;
+These examples use `erb`, the ERB command-line interface;
 each "echoes" a string template and pipes it to `erb` as input:
 
 
@@ -56,16 +56,16 @@ each "echoes" a string template and pipes it to `erb` as input:
         echo "<%# TODO: Fix this nonsense. %> Nonsense." | erb
         " Nonsense."
 
-## How to Use \ERB
+## How to Use ERB
 
-You can use \ERB either:
+You can use ERB either:
 
 - In a program: see class ERB.
 - From the command line: see [ERB Executable][erb executable].
 
 ## Installation
 
-\ERB is installed with Ruby, and so there's no further installation needed.
+ERB is installed with Ruby, and so there's no further installation needed.
 
 ## Other Template Engines
 
@@ -77,7 +77,7 @@ Other popular template engines may be found in the [Ruby Toolbox][ruby toolbox].
 
 ## Code
 
-The \ERB source code is in GitHub project [ruby/erb][ruby/erb]/
+The ERB source code is in GitHub project [ruby/erb][ruby/erb].
 
 ## Bugs
 
