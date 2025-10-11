@@ -1,5 +1,9 @@
 # Change Log
 
+## 5.1.0
+
+*  html_escape: Avoid buffer allocation for strings with no escapable character https://github.com/ruby/erb/pull/87
+
 ## 5.0.3
 
 * Update help of erb(1) [#85](https://github.com/ruby/erb/pull/85)
