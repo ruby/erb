@@ -1,5 +1,9 @@
 # Change Log
 
+## 5.1.1
+
+* Fix integer overflow that is introduced at v5.1.0
+
 ## 5.1.0
 
 *  html_escape: Avoid buffer allocation for strings with no escapable character https://github.com/ruby/erb/pull/87
