@@ -1,5 +1,9 @@
 # Change Log
 
+## 5.1.2
+
+* Add `changelog_uri` to spec metadata https://github.com/ruby/erb/pull/89
+
 ## 5.1.1
 
 * Fix integer overflow that is introduced at v5.1.0
