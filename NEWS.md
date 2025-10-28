@@ -1,4 +1,8 @@
-# Change Log
+# Change Lo
+
+## 5.1.3
+
+* Release v5.1.2 with trusted publishing for JRuby
 
 ## 5.1.2
 
