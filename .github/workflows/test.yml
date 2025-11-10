@@ -33,4 +33,4 @@ jobs:
       run: bundle exec rake test
     - name: RDoc coverage
       run: |
-        rdoc -C .
+        rdoc -C --visibility=private .
