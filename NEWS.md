@@ -2,7 +2,8 @@
 
 ## Unreleased (to be 6.0.0)
 
-- Remove `safe_level` and further positional arguments from `ERB.new`
+* Remove `safe_level` and further positional arguments from `ERB.new`
+* Remove deprecated constant `ERB::Revision`
 
 ## 5.1.3
 
