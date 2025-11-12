@@ -1,5 +1,9 @@
 # Change Lo
 
+## Unreleased (to be 6.0.0)
+
+- Remove `safe_level` and further positional arguments from `ERB.new`
+
 ## 5.1.3
 
 * Release v5.1.2 with trusted publishing for JRuby
