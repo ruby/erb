@@ -1,5 +1,9 @@
 # Changelog
 
+## 6.0.1
+
+* Freeze `ERB::Compiler::TrimScanner::ERB_STAG` for Ractor compatibility
+
 ## 6.0.0
 
 * Remove `safe_level` and further positional arguments from `ERB.new`
