@@ -1,5 +1,13 @@
 # Changelog
 
+## 6.0.3
+
+* Exclude some files from published gem https://github.com/ruby/erb/pull/108
+
+## 6.0.2
+
+* Freeze `src` in `ERB#initialize` for Ractor compatibility https://github.com/ruby/erb/pull/105
+
 ## 6.0.1
 
 * Freeze `ERB::Compiler::TrimScanner::ERB_STAG` for Ractor compatibility
