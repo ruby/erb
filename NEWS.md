@@ -1,5 +1,9 @@
 # Change Log
 
+## 4.0.4.1
+
+* Prohibit `def_method` on marshal-loaded ERB instances
+
 ## 4.0.4
 
 * Skip building the C extension for JRuby [#52](https://github.com/ruby/erb/pull/52)
