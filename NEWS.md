@@ -1,5 +1,9 @@
 # Changelog
 
+## 6.0.4
+
+* Prohibit `def_method` on marshal-loaded ERB instances
+
 ## 6.0.3
 
 * Exclude some files from published gem https://github.com/ruby/erb/pull/108
