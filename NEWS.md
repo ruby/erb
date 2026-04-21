@@ -1,5 +1,9 @@
 # Change Log
 
+## 4.0.3.1
+
+* Prohibit `def_method` on marshal-loaded ERB instances
+
 ## 4.0.3
 
 * Enable `frozen_string_literal` in all files [#49](https://github.com/ruby/erb/pull/49)
