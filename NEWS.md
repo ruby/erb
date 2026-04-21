@@ -1,5 +1,9 @@
 # Changelog
 
+## 6.0.1.1
+
+* Prohibit `def_method` on marshal-loaded ERB instances
+
 ## 6.0.1
 
 * Freeze `ERB::Compiler::TrimScanner::ERB_STAG` for Ractor compatibility
