@@ -57,7 +57,7 @@
 
 ## 4.0.4
 
-* Skip building the C extension for JRuby [#52](https://github.com/ruby/erb/pull/52)
+* Skip building the C extension for JRuby
 
 ## 4.0.3
 
