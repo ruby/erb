@@ -12,6 +12,10 @@
 
 * Freeze `src` in `ERB#initialize` for Ractor compatibility https://github.com/ruby/erb/pull/105
 
+## 6.0.1.1
+
+* Prohibit `def_method` on marshal-loaded ERB instances
+
 ## 6.0.1
 
 * Freeze `ERB::Compiler::TrimScanner::ERB_STAG` for Ractor compatibility
@@ -55,9 +59,17 @@
 * Drop `cgi` from runtime dependencies [#59](https://github.com/ruby/erb/pull/59)
 * Make `ERB::VERSION` public
 
+## 4.0.4.1
+
+* Prohibit `def_method` on marshal-loaded ERB instances
+
 ## 4.0.4
 
 * Skip building the C extension for JRuby
+
+## 4.0.3.1
+
+* Prohibit `def_method` on marshal-loaded ERB instances
 
 ## 4.0.3
 
