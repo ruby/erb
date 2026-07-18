@@ -8,14 +8,14 @@ ERB is commonly used to produce:
 - Customized or personalized web pages.
 - Software code (in code-generating applications).
 
-Like method [sprintf][sprintf], ERB can format run-time data into a string.
-ERB, however, is *much more powerful*
+Like method [`sprintf`][sprintf], ERB can format run-time data into a string.
+ERB, however, is *much more powerful*.
 
 ## How ERB Works
 
 Using ERB, you can create a *template*: a plain-text string that has specially-formatted *tags*,
 then store it into an ERB object;
-when ERB produces _result_ string, it:
+when ERB produces the _result_ string, it:
 
 - Inserts run-time-evaluated expressions into the result.
 - Executes snippets of Ruby code.
@@ -31,30 +31,32 @@ There are three types of tags:
 
 | Tag            |                 Form                 |                Action                 |    Text in Result    |
 |----------------|:------------------------------------:|:-------------------------------------:|:--------------------:|
-| Expression tag | <tt>'<%= _ruby_expression_ %>'</tt>  | Evaluates <tt>_ruby_expression_</tt>. | Value of expression. |       
-| Execution tag  |     <tt>'<% _ruby_code_ %>'</tt>     |     Execute <tt>_ruby_code_</tt>.     |        None.         |                 
-| Comment tag    |   <tt>'<%# _comment_text_ %>'</tt>   |                 None.                 |        None.         |
+| Expression tag |       `<%= ruby_expression %>`       |     Evaluates `ruby_expression`.      | Value of expression. |
+| Execution tag  |          `<% ruby_code %>`           |         Executes `ruby_code`.         |        None.         |
+| Comment tag    |        `<%# comment_text %>`         |                 None.                 |        None.         |
 
 These examples use `erb`, the ERB command-line interface;
 each "echoes" a string template and pipes it to `erb` as input:
 
 
 - Expression tag:
+    ```bash
+    $ echo "<%= \$VERBOSE %>" | erb
+    false
 
-        $ echo "<%= $VERBOSE %>" | erb
-        "false"
-        $ echo "<%= 2 + 2 %>" | erb
-        "4"
-
+    $ echo "<%= 2 + 2 %>" | erb
+    4
+    ```
 - Execution tag:
-
-        echo "<% if $VERBOSE %> Long message. <% else %> Short message. <% end %>" | erb
-        " Short message. "
-
+    ```bash
+    $ echo "<% if \$VERBOSE %> Long message. <% else %> Short message. <% end %>" | erb
+     Short message.
+    ```
 - Comment tag:
-
-        echo "<%# TODO: Fix this nonsense. %> Nonsense." | erb
-        " Nonsense."
+    ```bash
+    $ echo "<%# TODO: Fix this nonsense. %> Nonsense." | erb
+     Nonsense.
+    ```
 
 ## How to Use ERB
 
@@ -95,4 +97,4 @@ of the [2-Clause BSD License][2-clause bsd license].
 [ruby/erb]:             https://github.com/ruby/erb
 [ruby toolbox]:         https://www.ruby-toolbox.com/categories/template_engines
 [sprintf]:              https://docs.ruby-lang.org/en/master/Kernel.html#method-i-sprintf
-[template processor]:   https://en.wikipedia.org/wiki/Template_processor_
+[template processor]:   https://en.wikipedia.org/wiki/Template_processor

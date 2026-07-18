@@ -10,12 +10,10 @@ For a quick summary, type:
 $ erb --help
 ```
 
-The format of the command is
-`erb [_options_] [_filepaths_]`,
-where:
+The format of the command is `erb [options] [filepaths]`, where:
 
 - _options_ are zero or more [options][options].
-- _filepaths_ are zero or more paths to files, each containing an plain text
+- _filepaths_ are zero or more paths to files, each containing plain text
   that can include \ERB tags.
 
 ## Filepaths
@@ -27,10 +25,12 @@ that is, `erb` processes multiple files into a single result:
 $ cat t.erb
 <%= RUBY_VERSION %>
 <%= Time.now %>
+
 $ cat u.erb
 % Encoding.list.take(4).each do |encoding|
 * <%= encoding %>
 % end
+
 $ erb t.erb u.erb
 3.4.5
 2025-09-24 00:23:00 +0100
@@ -66,21 +66,22 @@ $ echo "<%= RUBY_VERSION %>" | erb # Prints the ERB version string.
 Use option `-d` or `--debug` to turn on debugging output:
 
 ```bash
-$ echo "<%= $DEBUG %>" | erb
-"false"
-$echo "<%= $DEBUG %>" | erb --debug
-"true"
+$ echo "<%= \$DEBUG %>" | erb
+false
+
+$ echo "<%= \$DEBUG %>" | erb --debug
+true
 ```
 
 ### `-E`, `--encoding`: Set Encodings
 
-Use option `-E` or `--encoding` to set the default external encoding to `_ex_`
-and, if `_in_` is given, to set the default internal encoding to `_in_`.
+Use option `-E ex[:in]` or `--encoding ex[:in]` to set the default external encoding to `ex` and,
+if `in` is given, to set the default internal encoding to `in`.
 
 Each encoding, `ex` and `in`, must be the name of an Encoding:
 
-```
-erb  -E ASCII-8BIT:ASCII-8BIT t.erb
+```bash
+$ erb -E ASCII-8BIT:ASCII-8BIT t.erb
 ```
 
 ### `-h`, `--help`: Print Help
@@ -100,6 +101,7 @@ with numbered lines:
 $ cat t.erb
 <%= RUBY_VERSION %>
 <%= Time.now %>
+
 $ erb -n -x t.erb
   1 #coding:UTF-8
   2 _erbout = +''; _erbout.<<(( RUBY_VERSION ).to_s); _erbout.<< "\n".freeze
@@ -119,11 +121,12 @@ $ erb -n t.erb
 
 By default, `erb` enables [execution tag shorthand][execution tag shorthand]:
 
-```
+```bash
 $ cat u.erb
 % Encoding.list.take(4).each do |encoding|
 * <%= encoding %>
 % end
+
 $ erb u.erb
 * ASCII-8BIT
 * UTF-8
@@ -133,7 +136,7 @@ $ erb u.erb
 
 You can use option `-P` to disable the shorthand:
 
-```
+```bash
 $ erb -P u.erb # Raises NameError: "undefined local variable or method 'encoding'"
 ```
 
@@ -142,7 +145,7 @@ $ erb -P u.erb # Raises NameError: "undefined local variable or method 'encoding
 You can use option `-r` to load a library;
 the option may be given multiple times, to load multiple libraries:
 
-```
+```bash
 $ erb -r csv -r bigdecimal t.erb
 ```
 
@@ -182,13 +185,14 @@ $ erb -U t.erb
 Use option `-v` to turn on verbose output:
 
 ```bash
-$ $ "<%= $VERBOSE %>" | erb
-"false"
-$ echo "<%= $VERBOSE %>" | erb -v
-"true"
+$ echo "<%= \$VERBOSE %>" | erb
+false
+
+$ echo "<%= \$VERBOSE %>" | erb -v
+true
 ```
 
-### `-v`: Print \ERB Version
+### `--version`: Print \ERB Version
 
 Use option `--version` to print the \ERB version string:
 
@@ -205,6 +209,7 @@ which is the Ruby code that is to be run when ERB#result is called:
 $ cat t.erb
 <%= RUBY_VERSION %>
 <%= Time.now %>
+
 $ erb -x t.erb
 #coding:UTF-8
 _erbout = +''; _erbout.<<(( RUBY_VERSION ).to_s); _erbout.<< "\n".freeze
@@ -230,7 +235,7 @@ The option may be given multiple times to set multiple variables:
 
 ```bash
 $ echo "<%= foo %> <%= bar %>" | erb foo=1 bar=2
-"1 2"
+1 2
 ```
 
 [erb.new]: https://docs.ruby-lang.org/en/master/ERB.html#method-c-new.
