@@ -1,5 +1,9 @@
 # Changelog
 
+## 6.0.7
+
+* Fix Ractor compatibility regression in v6.0.5
+
 ## 6.0.6
 
 * Fix `-h` CLI option
