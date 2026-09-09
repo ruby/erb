@@ -43,6 +43,73 @@ class TestERB < Test::Unit::TestCase
     assert_match(/\Atest filename:201\b/, e.backtrace[0])
   end
 
+  def test_html_escape
+    assert_equal(" !&quot;\#$%&amp;&#39;()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~",
+                 ERB::Util.html_escape(" !\"\#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"))
+
+    assert_equal("", ERB::Util.html_escape(""))
+    assert_equal("abc", ERB::Util.html_escape("abc"))
+    assert_equal("&lt;&lt;", ERB::Util.html_escape("<\<"))
+    assert_equal("&#39;&amp;&quot;&gt;&lt;" * 10, ERB::Util.html_escape("'&\"><" * 10))
+
+    assert_equal("", ERB::Util.html_escape(nil))
+    assert_equal("123", ERB::Util.html_escape(123))
+
+    assert_equal(65536+5, ERB::Util.html_escape("x"*65536 + "&").size)
+    assert_equal(65536+5, ERB::Util.html_escape("&" + "x"*65536).size)
+  end
+
+  def test_html_escape_simd_block_boundary
+    # Ensure we only escape the characters that need to be escaped.
+    (0...48).each do |pos|
+      s = "a" * 48
+      s[pos] = "<"
+      expected = "a" * pos + "&lt;" + "a" * (48 - pos - 1)
+      assert_equal(expected, ERB::Util.html_escape(s), "escape at position #{pos}")
+    end
+  end
+
+  HTML_ESCAPE_ENTITIES = {"'" => "&#39;", '"' => "&quot;", "&" => "&amp;", "<" => "&lt;", ">" => "&gt;"}
+
+  def test_html_escape_simd_multiple_matches_per_block
+    chars = ["'", '"', '&', '<', '>']
+    (0..15).each do |a|
+      (0..15).each do |b|
+        next if a == b
+        s = "a" * 32
+        s[a] = chars[a % chars.size]
+        s[b] = chars[b % chars.size]
+        expected = Array.new(32, "a")
+        expected[a] = HTML_ESCAPE_ENTITIES[chars[a % chars.size]]
+        expected[b] = HTML_ESCAPE_ENTITIES[chars[b % chars.size]]
+        assert_equal(expected.join, ERB::Util.html_escape(s), "positions #{a}, #{b}")
+      end
+    end
+  end
+
+  def test_html_escape_simd_tail_lengths
+    (1..40).each do |len|
+      (0...len).each do |pos|
+        s = "a" * len
+        s[pos] = ">"
+        expected = "a" * pos + "&gt;" + "a" * (len - pos - 1)
+        assert_equal(expected, ERB::Util.html_escape(s), "len=#{len} pos=#{pos}")
+      end
+    end
+  end
+
+  def test_html_escape_to_s
+    object = Object.new
+    def object.to_s
+      "object"
+    end
+    assert_equal("object", ERB::Util.html_escape(object))
+  end
+
+  def test_html_escape_extension
+    assert_nil(ERB::Util.method(:html_escape).source_location)
+  end if RUBY_ENGINE == 'ruby'
+
   def test_concurrent_default_binding
     # This test randomly fails with JRuby -- NameError: undefined local variable or method `template2'
     pend if RUBY_ENGINE == 'jruby'

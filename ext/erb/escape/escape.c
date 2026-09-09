@@ -188,24 +188,19 @@ find_next_neon(search_state *search)
         return find_next_match_neon(search);
     }
 
-    const uint8x16_t single_quote = vdupq_n_u8('\'');
-    const uint8x16_t double_quote = vdupq_n_u8('"');
-    const uint8x16_t ampersand = vdupq_n_u8('&');
-    const uint8x16_t lt = vdupq_n_u8('<');
-    const uint8x16_t gt = vdupq_n_u8('>');
+    static const uint8x16x4_t escape_table = {
+        .val = {
+            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+            {0,0,255,0,0,0,255,255,0,0,0,0,0,0,0,0},        // " (0x22) & (0x26) ' (0x27)
+            {0,0,0,0,0,0,0,0,0,0,0,0,255,0,255,0},          // < (0x3C) > (0x3E)
+        }
+    };
 
     while ((size_t)(search->end - search->cstr) >= sizeof(uint8x16_t)) {
         const uint8x16_t bytes = vld1q_u8(search->cstr);
-        const uint8x16_t match1 = vceqq_u8(bytes, single_quote);
-        const uint8x16_t match2 = vceqq_u8(bytes, double_quote);
-        const uint8x16_t match3 = vceqq_u8(bytes, ampersand);
-        const uint8x16_t match4 = vceqq_u8(bytes, lt);
-        const uint8x16_t match5 = vceqq_u8(bytes, gt);
 
-        const uint8x16_t mask1 = vorrq_u8(match1, match2);
-        const uint8x16_t mask2 = vorrq_u8(match3, match4);
-        const uint8x16_t mask3 = vorrq_u8(mask1, match5);
-        const uint8x16_t matches = vorrq_u8(mask2, mask3);
+        const uint8x16_t matches = vqtbl4q_u8(escape_table, bytes);
 
         const uint8x8_t res = vshrn_n_u16(vreinterpretq_u16_u8(matches), 4);
         const uint64_t bitmap = vget_lane_u64(vreinterpret_u64_u8(res), 0);
