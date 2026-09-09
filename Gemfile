@@ -13,4 +13,5 @@ group :development do
   end
   gem 'test-unit'
   gem "test-unit-ruby-core"
+  gem 'benchmark-ips'
 end
