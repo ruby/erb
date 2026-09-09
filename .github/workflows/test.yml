@@ -15,11 +15,14 @@ jobs:
 
   test:
     needs: ruby-versions
-    name: build (${{ matrix.ruby }} / ${{ matrix.os }})
+    name: build (${{ matrix.ruby }}${{ matrix.env }}/ ${{ matrix.os }})
     strategy:
       matrix:
         ruby: ${{ fromJson(needs.ruby-versions.outputs.versions) }}
         os: [ubuntu-latest, macos-latest]
+        env: [""]
+        include:
+          - { ruby: "4.0", os: "ubuntu-latest", env: " ERB_DISABLE_SIMD=1" }
       fail-fast: false
     runs-on: ${{ matrix.os }}
     steps:
@@ -30,7 +33,7 @@ jobs:
         ruby-version: ${{ matrix.ruby }}
         bundler-cache: true
     - name: Run test
-      run: bundle exec rake test
+      run: bundle exec rake test ${{ matrix.env }}
     - name: RDoc coverage
       run: |
         rdoc -C --visibility=private .
