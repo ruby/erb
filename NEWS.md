@@ -1,5 +1,9 @@
 # Changelog
 
+## 6.1.0
+
+* Speedup `ERB::Util.html_escape` with SIMD on `x86_64` and `aarch64` platforms.
+
 ## 6.0.7
 
 * Fix Ractor compatibility regression in v6.0.5
