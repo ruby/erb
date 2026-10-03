@@ -21,7 +21,21 @@ Gem::Specification.new do |spec|
   spec.metadata['changelog_uri'] = "https://github.com/ruby/erb/blob/v#{spec.version}/NEWS.md"
 
   spec.files = Dir.chdir(__dir__) do
-    `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|\.git|\.github)/}) }
+    begin
+      files = IO.popen(%w[git ls-files -z], err: File::NULL, &:read)
+      files = '' unless $?.success?
+    rescue Errno::ENOENT
+      files = ''
+    end
+    files = if files.empty?
+      Dir.glob('**/*', File::FNM_DOTMATCH).select { |f| File.file?(f) }
+    else
+      files.split("\x0")
+    end
+    files.reject do |f|
+      f.match?(%r{^(test|\.git|\.github|tmp)(?:/|$)}) ||
+        f.match?(%r{(?:/Makefile|\.(?:bundle|gem|o|so))$})
+    end
   end
   spec.bindir        = 'libexec'
   spec.executables   = ['erb']
