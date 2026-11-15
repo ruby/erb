@@ -57,6 +57,7 @@ class ERB
     def run(factory=ERB)
       trim_mode = 0
       disable_percent = false
+      template_encoding = [Encoding::UTF_8, nil]
       variables = {}
       begin
         while switch = ARGV.switch
@@ -84,9 +85,11 @@ class ERB
             trim_mode = arg.to_i
           when '-E', '--encoding'
             arg = ARGV.req_arg
-            set_encoding(*arg.split(/:/, 2))
+            template_encoding = arg.split(/:/, 2)
+            set_encoding(*template_encoding)
           when '-U'
-            set_encoding(Encoding::UTF_8, Encoding::UTF_8)
+            template_encoding = [Encoding::UTF_8, Encoding::UTF_8]
+            set_encoding(*template_encoding)
           when '-P'
             disable_percent = true
           when '-h', '--help'
@@ -137,7 +140,7 @@ EOU
         exit 1
       end
 
-      $<.set_encoding(Encoding::UTF_8, nil)
+      $<.set_encoding(*template_encoding)
       src = $<.read
       filename = $FILENAME
       exit 2 unless src
